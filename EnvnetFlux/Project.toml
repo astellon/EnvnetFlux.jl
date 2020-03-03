@@ -1,0 +1,4 @@
+name = "EnvnetFlux"
+uuid = "41196e6f-9610-47d9-9c30-cf98f03eea27"
+authors = ["astellon <22632787+astellon@users.noreply.github.com>"]
+version = "0.1.0"
