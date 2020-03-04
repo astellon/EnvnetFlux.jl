@@ -1,9 +1,12 @@
 using Flux
 using Flux: @functor
 
+he_uniform(dims...) = (rand(Float32, dims...) .- 0.5f0) .* sqrt(24.0f0 / Flux.nfan(dims...)[1])
+he_norm(dims...) = randn(Float32, dims...) .* sqrt(2.0f0 / Flux.nfan(dims...)[1])
+
 function ConvBNReLu(size, ch; stride=(1, 1), pad = (0, 0), bias=false)
   return Chain(
-    Conv(size, ch, stride = stride, pad = pad),
+    Conv(size, ch, init = he_norm, stride = stride, pad = pad),
     BatchNorm(ch[2], relu)
   )
 end
@@ -54,9 +57,11 @@ function Envnetv2(nclass)
     MaxPool((1, 2)),
     # flatten
     x->reshape(x, (256*10*8, :)),
-    Dense(256*10*8, 4096, relu),
-    Dense(4096, 4096, relu),
-    Dense(4096, nclass),
+    Dense(256*10*8, 4096, initW = he_norm, relu),
+    Dropout(0.2),
+    Dense(4096, 4096, initW = he_norm, relu),
+    Dropout(0.2),
+    Dense(4096, initW = he_norm, nclass),
   )
 end
 
