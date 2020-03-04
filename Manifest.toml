@@ -105,7 +105,7 @@ version = "1.1.0"
 
 [[DataLoaders]]
 deps = ["Distributed", "Random", "Test"]
-git-tree-sha1 = "0cfc4929619c9c95018d5ea1890ff937e60b6f2a"
+git-tree-sha1 = "affe0b1e94f8ec8e7640b2931e98d56a4553b90c"
 repo-rev = "master"
 repo-url = "https://github.com/astellon/DataLoaders.jl"
 uuid = "497715a0-b90d-11e9-0c8d-cf4cf9445a4a"
@@ -172,9 +172,9 @@ version = "0.7.1"
 
 [[Flux]]
 deps = ["AbstractTrees", "Adapt", "CodecZlib", "Colors", "CuArrays", "DelimitedFiles", "Juno", "MacroTools", "NNlib", "Pkg", "Printf", "Random", "Reexport", "SHA", "Statistics", "StatsBase", "Test", "ZipFile", "Zygote"]
-git-tree-sha1 = "321ba9839dd7bd83a7cb23769d8e9ea2a04a48b9"
+git-tree-sha1 = "b5647a92b4d547f835b0eac904331a97c45d773d"
 uuid = "587475ba-b771-5e3f-ad9e-33799f191a9c"
-version = "0.10.2"
+version = "0.10.3"
 
 [[ForwardDiff]]
 deps = ["CommonSubexpressions", "DiffResults", "DiffRules", "NaNMath", "Random", "SpecialFunctions", "StaticArrays"]
@@ -369,9 +369,9 @@ uuid = "10745b16-79ce-11e8-11f9-7d13ad32a3b2"
 
 [[StatsBase]]
 deps = ["DataAPI", "DataStructures", "LinearAlgebra", "Missings", "Printf", "Random", "SortingAlgorithms", "SparseArrays", "Statistics"]
-git-tree-sha1 = "be5c7d45daa449d12868f4466dbf5882242cf2d9"
+git-tree-sha1 = "19bfcb46245f69ff4013b3df3b977a289852c3a1"
 uuid = "2913bbd2-ae8a-5f71-8c99-4fb6c76f3a91"
-version = "0.32.1"
+version = "0.32.2"
 
 [[Test]]
 deps = ["Distributed", "InteractiveUtils", "Logging", "Random"]
