@@ -24,7 +24,7 @@ end
 function main()
   model = Envnetv2(50) |> gpu
 
-  datapath = "/home/astellon/workspace/python/envnet-pytorch/ESC-50-master/audio"
+  datapath = downloadesc()
   traindataset = ESC50Dataset(datapath, [1,2,3])
   valdataset   = ESC50Dataset(datapath, [4])
 

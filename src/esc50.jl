@@ -41,3 +41,23 @@ function Base.getindex(esc::ESC50Dataset, index::Int)
 
   reshape(s, (1, length(s), 1)), l
 end
+
+function downloadesc()
+  dist = joinpath(@__DIR__, "..", "data", "audio")
+
+  # already installed
+  ispath(dist) && return dist
+
+  # install
+  link = "https://github.com/karoldvl/ESC-50/archive/master.zip"
+  temp = mktempdir()
+
+  run(`curl -L $link -o $(joinpath(temp, "esc50.zip"))`)
+  run(`unzip -q $(joinpath(temp, "esc50.zip")) -d $temp`)
+
+  mkpath(joinpath(@__DIR__, "..", "data"))
+  mv(joinpath(temp, "ESC-50-master", "audio"), joinpath(@__DIR__, "..", "data", "audio"))
+  rm(temp, recursive=true)
+
+  return dist
+end
