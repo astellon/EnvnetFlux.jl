@@ -1,24 +1,54 @@
+using Statistics
 using Flux
-using Flux: crossentropy, @epochs
+using Flux: crossentropy, onecold
 using CuArrays
+
+using Printf
 
 using DataLoaders
 
 include("envnet.jl")
 include("esc50.jl")
 
+function lrschedule(epoch)
+  if epoch < 5
+    return 0.001
+  elseif epoch < 300
+    return 0.01
+  elseif epoch < 600
+    return 0.001
+  else
+    return 0.0001
+  end
+end
+
 function mytrain!(loss, ps, data, opt)
   ps = Flux.Params(ps)
-  for (x, y) in data
+  nitr = length(data)
+  for (i, (x, y)) in enumerate(data)
     x = x |> gpu
     y = y |> gpu
     gs = gradient(ps) do
       training_loss = loss(x, y)
       return training_loss
     end
-    println("train loss: $(loss(x, y))")
+    @printf "\t[%2d/%2d] train loss: %6.5f\n" i nitr loss(x, y)
     Flux.update!(opt, ps, gs)
   end
+end
+
+function validation(model, data)
+  correct_all = 0
+  all = 0
+  for (i, (x, y)) in enumerate(data)
+    x = x |> gpu
+    a = onecold(cpu(model(x))) .== onecold(y)
+
+    all += length(a)
+    correct_all += sum(a)
+  end
+
+  @printf "\tvalidation accuracy: %7.4f\n" 100 * correct_all / all
 end
 
 function main()
@@ -38,7 +68,12 @@ function main()
     crossentropy(ỹ, y)
   end
 
-  @epochs 2 mytrain!(softmax_cross_entropy, params(model), trainloader, optimizer)
+  for epoch in 1:1000
+    optimizer.eta = lrschedule(epoch)
+    @printf "\nEpoch %2d/1000 @LR=%f\n" epoch optimizer.eta
+    mytrain!(softmax_cross_entropy, params(model), trainloader, optimizer)
+    validation(model, valloader)
+  end
 end
 
 main()
