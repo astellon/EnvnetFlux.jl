@@ -1,8 +1,20 @@
 using Flux, WAV
 
+function nonzero(xs)
+  s = findfirst(x->x!=0, xs)
+  e = findlast(x->x!=0, xs)
+  @view xs[s:e]
+end
+
+function pad(xs, L = 33325)
+  z = zeros(eltype(xs), L*2 + length(xs))
+  z[L+1:L+length(xs)] = xs
+  z
+end
+
 function loadwav(path, mono = true)
   xs, fs = wavread(path)
-  ifelse(mono, sum(xs, dims = 2), xs)
+  @views ifelse(mono, sum(xs, dims = 2)[:, 1], xs)
 end
 
 struct ESC50Dataset
@@ -17,7 +29,7 @@ function ESC50Dataset(path::String, folds::Vector{Int}, mono::Bool = true)
   allfolds = [ match(r"(\d)-\d+-[A-Z]-\d+.wav", basename(f))[1] for f in files ]
   indices  = findall(x->in(x, folds), allfolds)
 
-  sounds = [ loadwav(f, mono) for f in files[indices] ]
+  sounds = [ Float32.(pad(nonzero(loadwav(f, mono)))) for f in files[indices] ]
   labels = [ match(r"\d-\d+-[A-Z]-(\d+).wav", basename(f))[1] for f in files[indices] ]
 
   labels = [ Flux.onehot(parse(Int, l), 0:49) for l in labels]
