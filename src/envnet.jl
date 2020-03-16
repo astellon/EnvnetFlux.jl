@@ -32,6 +32,7 @@ function Envnet(nclass)
     Dense(50*11*14, 4096, relu),
     Dense(4096, 4096, relu),
     Dense(4096, nclass),
+    softmax,
   )
 end
 
@@ -57,11 +58,12 @@ function Envnetv2(nclass)
     MaxPool((1, 2)),
     # flatten
     x->reshape(x, (256*10*8, :)),
-    Dense(256*10*8, 4096, initW = he_norm, relu),
-    Dropout(0.2),
-    Dense(4096, 4096, initW = he_norm, relu),
-    Dropout(0.2),
-    Dense(4096, initW = he_norm, nclass),
+    Dense(256*10*8, 4096, relu, initW = he_norm),
+    Dropout(0.4),
+    Dense(4096, 4096, relu, initW = he_norm),
+    Dropout(0.4),
+    Dense(4096, nclass, initW = he_norm),
+    softmax,
   )
 end
 
