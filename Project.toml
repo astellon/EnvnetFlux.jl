@@ -1,7 +1,9 @@
 [deps]
+BSON = "fbb218c0-5317-5bc6-957e-2ee96dd4b1f0"
 CuArrays = "3a865a2d-5b23-5a0f-bc46-62713ec82fae"
 DSP = "717857b8-e6f2-59f4-9121-6e50c889abd2"
 DataLoaders = "497715a0-b90d-11e9-0c8d-cf4cf9445a4a"
 Flux = "587475ba-b771-5e3f-ad9e-33799f191a9c"
+PaddedViews = "5432bcbf-9aad-5242-b902-cca2824c8663"
 Printf = "de0858da-6303-5e67-8744-51eddeeeb8d7"
 WAV = "8149f6b0-98f6-5db9-b78f-408fbbb8ef88"
